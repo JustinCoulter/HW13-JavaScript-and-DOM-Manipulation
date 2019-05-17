@@ -3,6 +3,7 @@ var tableData = data;
 
 //  d3 selectors
 var button = d3.select("#filter-btn");
+var reset = d3.select("#reset-btn");
 var dateText = d3.select("#datetime");
 var cityText = d3.select("#cityname");
 var stateText = d3.select("#statename");
@@ -111,6 +112,9 @@ function filterFilter(dataset) {
     else {
         filteredData3 = filteredData2;
     }
+    // if (filteredData3 = '') {
+    //     filteredData3 = 'NO RELEVANT RECORD';
+    // }
     return filteredData3;
 }  
 
@@ -129,5 +133,18 @@ button.on("click", function() {
     updateTable(fData);
  
     console.log('updated date')
+    
+});
+reset.on("click", function() {
+    d3.event.preventDefault();
+    
+    tbody.html('');
+    // var fData = filterFilter(tableData);
+    // console.log(fData);
+    
+    // stateText = '';
+    updateTable(tableData);
+    // readTable(tableData);
+    console.log('reset table')
     
 });
