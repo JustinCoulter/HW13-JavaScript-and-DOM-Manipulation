@@ -9,26 +9,51 @@ var stateText = d3.select("#statename");
 var shapeText = d3.select("#shapename");
 
 var tbody = d3.select("tbody");
-// var shapeS = [];
+
 var shapeWord = [];
+var stateWord = [];
+var cityWord = [];
+var dateWord = [];
+
 var drop = [];
 function readTable(dataset) {
     dataset.forEach(function(sights) {
         // var shapeD = shapeText.append("option");
         Object.entries(sights).forEach(function([key,value]) {
             var shapeS = sights.shape;
-            
-            shapeWord.push(shapeS);                      
+            var stateS = sights.state;
+            var cityS = sights.city;
+            var dateS = sights.datetime;
+
+            shapeWord.push(shapeS);
+            stateWord.push(stateS);
+            cityWord.push(cityS);  
+            dateWord.push(dateS);                     
         });       
     });
     var shapeUnique = [...new Set(shapeWord)];
-    console.log(shapeUnique);
+    var stateUnique = [...new Set(stateWord)];
+    var cityUnique = [...new Set(cityWord)];
+    var dateUnique = [...new Set(dateWord)];
+    // console.log(shapeUnique);
+
+
     shapeUnique.forEach(function(shap) {
         drop = shapeText.append("option");
         drop.text(shap);       
     });
-    
-   
+    stateUnique.forEach(function(shap) {
+        drop = stateText.append("option");
+        drop.text(shap);       
+    });
+    cityUnique.forEach(function(shap) {
+        drop = cityText.append("option");
+        drop.text(shap);       
+    });
+    dateUnique.forEach(function(shap) {
+        drop = dateText.append("option");
+        drop.text(shap);       
+    });
 
 }
 
