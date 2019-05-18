@@ -3,23 +3,25 @@ var tableData = data;
 
 //  d3 selectors
 var button = d3.select("#filter-btn");
-var reset = d3.select("#reset-btn");
+var resetTable = d3.select("#reset-btn");
+var resetFilter = d3.select("#filterReset-btn");
 var dateText = d3.select("#datetime");
 var cityText = d3.select("#cityname");
 var stateText = d3.select("#statename");
 var shapeText = d3.select("#shapename");
 
 var tbody = d3.select("tbody");
-
+// initialize variables for readTable function
 var shapeWord = [];
 var stateWord = [];
 var cityWord = [];
 var dateWord = [];
 
 var drop = [];
+// reads data and populates dropdown menus in html
 function readTable(dataset) {
     dataset.forEach(function(sights) {
-        // var shapeD = shapeText.append("option");
+       
         Object.entries(sights).forEach(function([key,value]) {
             var shapeS = sights.shape;
             var stateS = sights.state;
@@ -33,8 +35,11 @@ function readTable(dataset) {
         });       
     });
     var shapeUnique = [...new Set(shapeWord)];
+    shapeUnique.sort();
     var stateUnique = [...new Set(stateWord)];
+    stateUnique.sort();
     var cityUnique = [...new Set(cityWord)];
+    cityUnique.sort();
     var dateUnique = [...new Set(dateWord)];
     // console.log(shapeUnique);
 
@@ -74,7 +79,7 @@ function updateTable(dataset) {
 
 
 
-//  trying multiple filters..
+// filters
 function filterFilter(dataset) {
     var newDateText = dateText.property("value");
     var newCityText = cityText.property("value");
@@ -85,36 +90,32 @@ function filterFilter(dataset) {
 
     if (newDateText) {
         filteredData = dataset.filter(sighting => sighting.datetime === newDateText);
-        console.log(filteredData);
-        // return filteredData;
     }
     else {
         filteredData = dataset;
     }
     if (newCityText) {
-        filteredData1 = filteredData.filter(sighting => sighting.city === newCityText);
-        console.log(filteredData1);   
+        filteredData1 = filteredData.filter(sighting => sighting.city === newCityText);    
     }
     else {
         filteredData1 = filteredData;
     }
     if (newStateText) {
-        filteredData2 = filteredData1.filter(sighting => sighting.state === newStateText);
-        console.log(filteredData2);    
+        filteredData2 = filteredData1.filter(sighting => sighting.state === newStateText);        
     }
     else {
         filteredData2 = filteredData1;
     }
     if (newShapeText) {
-        filteredData3 = filteredData2.filter(sighting => sighting.shape === newShapeText);
-        console.log(filteredData3);    
+        filteredData3 = filteredData2.filter(sighting => sighting.shape === newShapeText);   
     }
     else {
         filteredData3 = filteredData2;
     }
-    // if (filteredData3 = '') {
-    //     filteredData3 = 'NO RELEVANT RECORD';
-    // }
+    if (filteredData3 == '') {
+        window.alert(" I'm sorry Christian. \n NO RELEVANT RECORD FOUND \n Please Reset Filters");
+        
+    }
     return filteredData3;
 }  
 
@@ -123,7 +124,6 @@ updateTable(tableData);
 readTable(tableData);
 
 // display new table on click
-
 button.on("click", function() {
     d3.event.preventDefault();
     
@@ -135,16 +135,28 @@ button.on("click", function() {
     console.log('updated date')
     
 });
-reset.on("click", function() {
+
+// reset Table button
+resetTable.on("click", function() {
     d3.event.preventDefault();
-    
+
     tbody.html('');
-    // var fData = filterFilter(tableData);
-    // console.log(fData);
-    
-    // stateText = '';
+
     updateTable(tableData);
-    // readTable(tableData);
+
     console.log('reset table')
+    
+});
+
+// reset Filter button 
+resetFilter.on("click", function() {
+    d3.event.preventDefault();
+
+    document.getElementById('datetime').value = '';
+    document.getElementById('cityname').value = '';
+    document.getElementById('statename').value = '';
+    document.getElementById('shapename').value = '';
+
+    console.log('reset filters')
     
 });
